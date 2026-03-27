@@ -97,22 +97,30 @@
     </div>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
 
 <script>
+const supabase = window.supabase.createClient(
+  "https://YOURhttps://dscpzsjbtlumlxttngog.supabase.co_PROJECT_ID.supabase.co",
+  "sb_publishable_M6dQkmoKUQwNOwj5q2XkBQ_dFR7Q-w0"
+);
+
 document.getElementById("contact-form").addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const name = document.getElementById("name").value;
     const email = document.getElementById("email").value;
 
-    const res = await fetch("/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email })
-    });
+    const { error } = await supabase
+        .from("contacts")
+        .insert([{ name, email }]);
 
-    const data = await res.json();
-    alert(data.message);
+    if (error) {
+        alert("Error: " + error.message);
+    } else {
+        alert("Message sent!");
+        document.getElementById("contact-form").reset();
+    }
 });
 </script>
 
