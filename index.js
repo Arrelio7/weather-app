@@ -36,6 +36,16 @@ app.post("/contact", async (req, res) => {
     }
 });
 
+// View all contacts
+app.get("/admin/contacts", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT * FROM contacts");
+        res.json(result.rows);
+    } catch (err) {
+        res.json({ error: err.message });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server running on http://localhost:${PORT}`);
 });
